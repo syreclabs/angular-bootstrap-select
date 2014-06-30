@@ -35,12 +35,12 @@ angular.module('angular-bootstrap-select', [])
             return;
           }
 
-          scope.$watch(attrs.ngModel, function () {
-            $timeout(function () {
-              element.selectpicker('val', element.val());
-              element.selectpicker('refresh');
-            });
-          });
+          // scope.$watch(attrs.ngModel, function () {
+          //   $timeout(function () {
+          //     element.selectpicker('val', element.val());
+          //     element.selectpicker('refresh');
+          //   });
+          // });
 
           ngModel.$render = function () {
             $timeout(function () {
