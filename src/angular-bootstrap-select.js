@@ -28,21 +28,14 @@ angular.module('angular-bootstrap-select', [])
       restrict: 'A',
       require: '?ngModel',
       priority: 1001,
-      compile: function (tElement, tAttrs, transclude) {
-        tElement.selectpicker($parse(tAttrs.selectpicker)());
+      compile: function (element, attrs, transclude) {
         return function (scope, element, attrs, ngModel) {
           if (angular.isUndefined(ngModel)){
             return;
           }
 
-          // scope.$watch(attrs.ngModel, function () {
-          //   $timeout(function () {
-          //     element.selectpicker('val', element.val());
-          //     element.selectpicker('refresh');
-          //   });
-          // });
-
           ngModel.$render = function () {
+            element.selectpicker($parse(attrs.selectpicker)());
             $timeout(function () {
               element.selectpicker('val', ngModel.$viewValue || '');
               element.selectpicker('refresh');
