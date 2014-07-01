@@ -27,6 +27,7 @@ angular.module('angular-bootstrap-select', [])
       restrict: 'A',
       require: '?ngModel',
       priority: 1001,
+
       link: function(scope, element, attrs) {
         element.selectpicker($parse(attrs.selectpicker)());
 
@@ -37,11 +38,17 @@ angular.module('angular-bootstrap-select', [])
           });
         });
 
+        if (attrs.spOptions) {
+          scope.$watch(attrs.spOptions, function(options) {
+            element.val(scope.$eval(attrs.ngModel));
+            element.selectpicker('refresh');
+          });
+        }
+
         $timeout(function() {
           element.val(scope.$eval(attrs.ngModel));
           element.selectpicker('refresh');
         });
       }
-
     };
   }]);
