@@ -29,7 +29,7 @@ angular.module('angular-bootstrap-select', [])
       priority: 1001,
 
       link: function(scope, element, attrs) {
-        element.selectpicker($parse(attrs.selectpicker)());
+        rebuild();
 
         scope.$watch(attrs.ngModel, function(value) {
           $timeout(function() {
@@ -40,15 +40,35 @@ angular.module('angular-bootstrap-select', [])
 
         if (attrs.spOptions) {
           scope.$watch(attrs.spOptions, function(options) {
+            if (options && options.$promise) {
+              options.$promise.then(function(options) {
+                rebuild();
+              })
+            }
+            else {
+              rebuild();
+            }
+          });
+        }
+        
+        function rebuild() {
+          var sp = element.data('selectpicker');
+          if (sp) {
+            // sp.$menu.parent().remove();
+            sp.$newElement.remove();
+            element.removeData('selectpicker');
+          }
+          $timeout(function() {
+            element.selectpicker($parse(attrs.selectpicker)());
             element.val(scope.$eval(attrs.ngModel));
             element.selectpicker('refresh');
           });
         }
 
-        $timeout(function() {
-          element.val(scope.$eval(attrs.ngModel));
-          element.selectpicker('refresh');
-        });
+        // $timeout(function() {
+        //   element.val(scope.$eval(attrs.ngModel));
+        //   element.selectpicker('refresh');
+        // });
       }
     };
   }]);
